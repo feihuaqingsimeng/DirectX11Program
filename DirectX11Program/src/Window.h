@@ -42,7 +42,7 @@ private:
 private:
 	int width;
 	int height;
-	HWND hwnd;
+	HWND hwnd; 
 };
 
 #define  CHWND_EXCEPT(hr) Window::Exception(__LINE__,__FILE__,hr)
