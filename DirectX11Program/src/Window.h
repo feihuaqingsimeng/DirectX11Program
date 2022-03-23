@@ -2,6 +2,8 @@
 #include "../framework.h"
 #include "DXException.h"
 #include "Keyboard.h"
+#include "Mouse.h"
+
 class Window
 {
 public:	
@@ -36,12 +38,14 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	void SetTitle(const std::wstring& name);
 private:
 	static LRESULT CALLBACK HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	LRESULT HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 public:
 	Keyboard keyboard;
+	Mouse mouse;
 private:
 	int width;
 	int height;

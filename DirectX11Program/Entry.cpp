@@ -2,6 +2,7 @@
 //
 
 #include "framework.h"
+#include <sstream>
 #include "src/Window.h"
 #define MAX_NAME_STRING 512
 
@@ -17,13 +18,19 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		MSG msg;
 		BOOL result;
+		int count = 0;
 		// 主消息循环:
 		while ((result = GetMessage(&msg, nullptr, 0, 0)) > 0)
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-			if (wnd.keyboard.KeyIsPressed(VK_MENU)) {
-				MessageBox(nullptr, L"aaa", L"bbb", MB_OK);
+			while (!wnd.mouse.IsEmpty()) {
+				auto e = wnd.mouse.Read();
+				if (e.GetType() == Mouse::Event::Type::WheelDown) {
+					std::wostringstream oss;
+					oss << "mouse position:(" << e.GetPosX() << "," << e.GetPosY()<<","<<count++<<")";
+					wnd.SetTitle(oss.str());
+				}
 			}
 		}
 		if (result == -1) return -1;

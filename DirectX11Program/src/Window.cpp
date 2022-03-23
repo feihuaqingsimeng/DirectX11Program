@@ -45,7 +45,9 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 
 
 Window::Window(int width, int height, const wchar_t* name)
+	:width(width),height(height)
 {
+	
 	RECT r;
 	r.left = 100;
 	r.right = width + r.left;
@@ -64,6 +66,11 @@ Window::Window(int width, int height, const wchar_t* name)
 Window::~Window()
 {
 	DestroyWindow(hwnd);
+}
+
+void Window::SetTitle(const std::wstring& name)
+{
+	SetWindowText(hwnd, name.c_str());
 }
 
 LRESULT Window::HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -107,7 +114,67 @@ LRESULT Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CHAR:
 		keyboard.OnChar(static_cast<unsigned char>(wParam));
 		break;
+	/**********************mouse************************/
+	case WM_MOUSEMOVE:
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height) 
+		{
+			mouse.OnMouseMove(pt.x, pt.y);
+			if (!mouse.IsInWindow()) {
+				SetCapture(hwnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		else {
+			if (wParam &(MK_LBUTTON | MK_RBUTTON)) {
+				mouse.OnMouseMove(pt.x, pt.y);
+			}
+			else {
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
+		
+		break;
 	}
+		
+	case WM_LBUTTONDOWN:
+	{
+		const POINTS p = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(p.x, p.y);
+		break;
+	}
+		
+	case WM_LBUTTONUP:
+	{
+		const POINTS p = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(p.x, p.y);
+		break;
+	}
+		
+	case WM_RBUTTONDOWN:
+	{
+		const POINTS p = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(p.x, p.y);
+		break;
+	}
+		
+	case WM_RBUTTONUP:
+	{
+		const POINTS p = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(p.x, p.y);
+	}
+		
+	case WM_MOUSEWHEEL:
+	{
+		const POINTS p = MAKEPOINTS(lParam);
+		int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+		mouse.OnWheelDelta(p.x, p.y, delta);
+	}
+		
+	}
+
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
