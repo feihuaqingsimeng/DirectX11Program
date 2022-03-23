@@ -73,6 +73,18 @@ void Window::SetTitle(const std::wstring& name)
 	SetWindowText(hwnd, name.c_str());
 }
 
+std::optional<int> Window::ProcessMessages()
+{
+	MSG msg = {0};
+	PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE);
+	if (msg.message == WM_QUIT)
+		return msg.wParam;
+
+	TranslateMessage(&msg);
+	DispatchMessage(&msg);
+	return {};
+}
+
 LRESULT Window::HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_NCCREATE) {

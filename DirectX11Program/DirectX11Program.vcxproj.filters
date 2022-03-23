@@ -16,52 +16,50 @@
     <Filter Include="src">
       <UniqueIdentifier>{1d566328-ab22-4813-8316-f3b4e83e27e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\platform">
+      <UniqueIdentifier>{77929940-b20d-453b-8cc1-045f80ebe678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\platform\win32">
+      <UniqueIdentifier>{12c53e3f-01f1-4545-aeea-8030fa1fd445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dx11">
+      <UniqueIdentifier>{cca3b6af-f711-4fce-9c3c-0c9ae567eb62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\common">
+      <UniqueIdentifier>{5967877d-8f90-407f-bfee-f1ff30b1503a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Window.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\DXException.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\Keyboard.h">
+    <ClInclude Include="src\framework.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mouse.h">
+    <ClInclude Include="src\platform\win32\Keyboard.h">
+      <Filter>src\platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\win32\Mouse.h">
+      <Filter>src\platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\win32\Window.h">
+      <Filter>src\platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dx11\Graphics.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\win32\DXException.h">
+      <Filter>src\platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\Timer.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App.h">
       <Filter>src</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Graphics.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Entry.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Window.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DXException.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Keyboard.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mouse.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11Program.rc">
@@ -72,5 +70,31 @@
     <Image Include="images\icon\small.ico">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Entry.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\win32\Keyboard.cpp">
+      <Filter>src\platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\win32\Mouse.cpp">
+      <Filter>src\platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\win32\Window.cpp">
+      <Filter>src\platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dx11\Graphics.cpp">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\win32\DXException.cpp">
+      <Filter>src\platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\Timer.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

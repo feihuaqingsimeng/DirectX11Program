@@ -1,9 +1,10 @@
 #pragma once
-#include "../framework.h"
-#include "DXException.h"
+#include <windows.h>
+#include "resource.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-
+#include "DXException.h"
+#include <optional>
 class Window
 {
 public:	
@@ -39,6 +40,7 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	void SetTitle(const std::wstring& name);
+	static std::optional<int> ProcessMessages();
 private:
 	static LRESULT CALLBACK HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
