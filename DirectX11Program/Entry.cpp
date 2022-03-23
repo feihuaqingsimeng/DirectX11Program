@@ -3,7 +3,7 @@
 
 #include "framework.h"
 #include "src/Window.h"
-
+#define MAX_NAME_STRING 512
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -11,7 +11,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
 	try {
-		Window wnd(800, 300, L"dx11 window");
+		WCHAR name[MAX_NAME_STRING];
+		LoadString(hInstance, IDS_APPNAME, name, MAX_NAME_STRING);
+		Window wnd(800, 300,name );
 
 		MSG msg;
 		BOOL result;
@@ -20,6 +22,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			if (wnd.keyboard.KeyIsPressed(VK_MENU)) {
+				MessageBox(nullptr, L"aaa", L"bbb", MB_OK);
+			}
 		}
 		if (result == -1) return -1;
 		return (int)msg.wParam;

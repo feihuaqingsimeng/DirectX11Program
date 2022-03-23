@@ -165,11 +165,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DirectX11Program.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\DXException.h" />
     <ClInclude Include="src\Graphics.h" />
+    <ClInclude Include="src\Keyboard.h" />
+    <ClInclude Include="src\Mouse.h" />
     <ClInclude Include="src\Window.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -177,14 +178,15 @@
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="src\DXException.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
+    <ClCompile Include="src\Keyboard.cpp" />
+    <ClCompile Include="src\Mouse.cpp" />
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DirectX11Program.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DirectX11Program.ico" />
-    <Image Include="small.ico" />
+    <Image Include="images\icon\small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

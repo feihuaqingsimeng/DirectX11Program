@@ -16,7 +16,7 @@ Window::WindowClass::WindowClass() noexcept
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = hInst;
-	wcex.hIcon = nullptr;
+	wcex.hIcon = LoadIcon(hInst,MAKEINTRESOURCE(IDI_APPICON));
 	wcex.hCursor = nullptr;
 	wcex.hbrBackground = nullptr;
 	wcex.lpszMenuName = nullptr;
@@ -91,6 +91,22 @@ LRESULT Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		return 0;
+	case WM_KILLFOCUS:
+		keyboard.ClearState();
+		break;
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+		//第三十位标记位为首次
+		if(!(lParam & 0x40000000)|| keyboard.AutoRepeatIsEnabled())
+			keyboard.OnKeyPressed(static_cast<unsigned char>(wParam));
+		break;
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		keyboard.OnKeyReleased(static_cast<unsigned char>(wParam));
+		break;
+	case WM_CHAR:
+		keyboard.OnChar(static_cast<unsigned char>(wParam));
+		break;
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
