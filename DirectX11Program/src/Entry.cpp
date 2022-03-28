@@ -13,7 +13,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		App app;
 		return app.Run();
 	}
-	catch (const DXException& e) {
+	catch (const ResultException& e) {
+		MessageBoxA(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
+	}
+	catch (const InfoException& e) {
+		MessageBoxA(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
+	}
+	catch (const Exception& e) {
 		MessageBoxA(nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION);
 	}
 	catch (const std::exception& e)

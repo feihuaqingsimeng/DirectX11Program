@@ -20,9 +20,10 @@ int App::Run()
 
 void App::Frame()
 {
-	const float t = timer.Peek();
-	std::wostringstream oss;
-	oss << "time:" << std::setprecision(1) << std::fixed << t << "s";
-	//wnd.SetTitle(oss.str());
+	const float c = sin(timer.Peek()) / 2.0f + 0.5f;
+	wnd.Gfx().ClearBuffer(c, c, 1.0f);
+	wnd.Gfx().DrawTestTriangle();
+
+	wnd.Gfx().EndFrame();
 }
 

@@ -3,22 +3,12 @@
 #include "resource.h"
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "DXException.h"
+#include "dx11/DXException.h"
 #include <optional>
+#include "dx11/Graphics.h"
+#include <memory>
 class Window
 {
-public:	
-	class Exception :public DXException {
-	public:
-		Exception(int line, const char* file, HRESULT hr);
-		const char* what() const override;
-		virtual const char* GetType() const;
-		static std::string TranslateErrorCode(HRESULT hr);
-		HRESULT GetErrorCode() const;
-		std::string GetErrorString() const;
-	private:
-		HRESULT hr;
-	};
 private:
 	class WindowClass {
 	public:
@@ -41,6 +31,8 @@ public:
 	Window& operator=(const Window&) = delete;
 	void SetTitle(const std::wstring& name);
 	static std::optional<int> ProcessMessages();
+	Graphics& Gfx();
+
 private:
 	static LRESULT CALLBACK HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK HandleMsgThunk(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -52,7 +44,5 @@ private:
 	int width;
 	int height;
 	HWND hwnd; 
+	std::unique_ptr<Graphics> graphics;
 };
-
-#define  CHWND_EXCEPT(hr) Window::Exception(__LINE__,__FILE__,hr)
-#define  CHWND_LAST_EXCEPT() Window::Exception(__LINE__,__FILE__,GetLastError());

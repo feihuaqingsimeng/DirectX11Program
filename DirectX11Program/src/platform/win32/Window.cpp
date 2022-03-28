@@ -61,6 +61,8 @@ Window::Window(int width, int height, const wchar_t* name)
 		WindowClass::GetInstance(), this);
 
 	ShowWindow(hwnd, SW_SHOWDEFAULT);
+
+	graphics = std::make_unique<Graphics>(hwnd);
 }
 
 Window::~Window()
@@ -83,6 +85,11 @@ std::optional<int> Window::ProcessMessages()
 	TranslateMessage(&msg);
 	DispatchMessage(&msg);
 	return {};
+}
+
+Graphics & Window::Gfx()
+{
+	return *graphics;
 }
 
 LRESULT Window::HandleMsgSetUp(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -190,48 +197,3 @@ LRESULT Window::HandleMsg(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-Window::Exception::Exception(int line, const char* file, HRESULT hr)
-	:DXException(line,file),hr(hr)
-{
-
-}
-
-const char* Window::Exception::what() const
-{
-	std::ostringstream oss;
-	oss << GetType() << std::endl
-		<< "[Error Code]" << GetErrorCode() << std::endl
-		<< "[Description]" << GetErrorString() << std::endl
-		<< GetOriginString();
-	whatBuffer = oss.str();
-	return whatBuffer.c_str();
-}
-
-const char* Window::Exception::GetType() const
-{
-	return "WindowException";
-}
-
-std::string Window::Exception::TranslateErrorCode(HRESULT hr)
-{
-	char* pMsgBuf = nullptr;
-	DWORD nMsgLen = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), reinterpret_cast<LPSTR>(&pMsgBuf),
-		0, nullptr);
-	if (nMsgLen == 0)
-		return "Unidentified error code";
-	std::string errorString = pMsgBuf;
-	LocalFree(pMsgBuf);
-	return errorString;
-}
-
-HRESULT Window::Exception::GetErrorCode() const
-{
-	return hr;
-}
-
-std::string Window::Exception::GetErrorString() const
-{
-	return TranslateErrorCode(hr);
-}

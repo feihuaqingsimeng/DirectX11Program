@@ -36,9 +36,6 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\framework.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\platform\win32\Keyboard.h">
       <Filter>src\platform\win32</Filter>
     </ClInclude>
@@ -51,14 +48,20 @@
     <ClInclude Include="src\dx11\Graphics.h">
       <Filter>src\dx11</Filter>
     </ClInclude>
-    <ClInclude Include="src\platform\win32\DXException.h">
-      <Filter>src\platform\win32</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\Timer.h">
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\App.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dx11\DXException.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dx11\DxgiInfoMgr.h">
+      <Filter>src\dx11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,14 +90,17 @@
     <ClCompile Include="src\dx11\Graphics.cpp">
       <Filter>src\dx11</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\win32\DXException.cpp">
-      <Filter>src\platform\win32</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\Timer.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
     <ClCompile Include="src\App.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dx11\DXException.cpp">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dx11\DxgiInfoMgr.cpp">
+      <Filter>src\dx11</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
