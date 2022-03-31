@@ -21,12 +21,13 @@ protected:
 
 class ResultException :public Exception {
 public:
-	ResultException(int line, const char* file, HRESULT hr);
+	ResultException(int line, const char* file, HRESULT hr, std::vector < std::string> infoMsgs = {});
 	const char* what() const override;
 	virtual const char* GetType() const;
 	static std::string TranslateErrorCode(HRESULT hr);
 	HRESULT GetErrorCode() const;
 	std::string GetErrorString() const;
+	std::string GetErrorDescription() const;
 private:
 	HRESULT hr;
 	std::string info;

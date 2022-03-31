@@ -1,7 +1,8 @@
 #include "Graphics.h"
 #include "framework.h"
+#include <d3dcompiler.h>
 #pragma comment(lib,"d3d11.lib")
-
+#pragma comment(lib,"D3DCompiler.lib")
 
 
 
@@ -91,8 +92,48 @@ void Graphics::DrawTestTriangle()
 	THROW_FAILED(pDevice->CreateBuffer(&db, &sd, &pVertextBuffer));
 	const UINT stride = sizeof(Vertex);
 	const UINT offset = 0u;
-	pContext->IASetVertexBuffers(0u, 1u, &pVertextBuffer, &stride, &offset);
+	pContext->IASetVertexBuffers(0u, 1u, pVertextBuffer.GetAddressOf(), &stride, &offset);
 
-	THROW_INFO_ONLY( pContext->Draw(3u, 0u));
+	// create pixel shader
+	ComPtr<ID3D11PixelShader> pPixelShader;
+	ComPtr<ID3DBlob> blob;
+	THROW_INFO_ONLY(D3DReadFileToBlob(L"PixelShader.cso", &blob));
+	THROW_INFO_ONLY(pDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pPixelShader));
+	//bind pixel shader
+	THROW_INFO_ONLY(pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u));
+
+	//create vertex shader
+	ComPtr<ID3D11VertexShader> pVertextShader;
+	THROW_INFO_ONLY(D3DReadFileToBlob(L"vertexShader.cso",&blob));
+	THROW_INFO_ONLY(pDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pVertextShader));
+	//bind vertex shader
+	pContext->VSSetShader(pVertextShader.Get(), nullptr, 0u);
+
+	//input (vertex) layout
+	ComPtr<ID3D11InputLayout> pInputLayout;
+	const D3D11_INPUT_ELEMENT_DESC ied[] = {
+		{"Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
+	};
+	THROW_FAILED(pDevice->CreateInputLayout(ied, std::size(ied), blob->GetBufferPointer(),
+		blob->GetBufferSize(), &pInputLayout));
+
+	pContext->IASetInputLayout(pInputLayout.Get());
+	//bind render target
+	THROW_INFO_ONLY(pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), nullptr));
+
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//viewport
+	D3D11_VIEWPORT vp;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	vp.Width = 800;
+	vp.Height = 600;
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+
+	pContext->RSSetViewports(1u, &vp);
+
+	THROW_INFO_ONLY( pContext->Draw((UINT)std::size(vertices), 0u));
 }
 

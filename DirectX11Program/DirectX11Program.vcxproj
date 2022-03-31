@@ -108,6 +108,7 @@
     <ClInclude Include="src\dx11\DXException.h" />
     <ClInclude Include="src\dx11\DxgiInfoMgr.h" />
     <ClInclude Include="src\dx11\Graphics.h" />
+    <ClInclude Include="src\Dxerr\dxerr.h" />
     <ClInclude Include="src\platform\win32\Keyboard.h" />
     <ClInclude Include="src\platform\win32\Mouse.h" />
     <ClInclude Include="src\platform\win32\Window.h" />
@@ -125,10 +126,33 @@
     <ClCompile Include="src\dx11\DXException.cpp" />
     <ClCompile Include="src\dx11\DxgiInfoMgr.cpp" />
     <ClCompile Include="src\dx11\Graphics.cpp" />
+    <ClCompile Include="src\Dxerr\dxerr.cpp" />
     <ClCompile Include="src\Entry.cpp" />
     <ClCompile Include="src\platform\win32\Keyboard.cpp" />
     <ClCompile Include="src\platform\win32\Mouse.cpp" />
     <ClCompile Include="src\platform\win32\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\shader\vertexShader.hlsl">
+      <FileType>Document</FileType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\shader\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <FileType>Document</FileType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Dxerr\DXGetErrorDescription.inl" />
+    <None Include="src\Dxerr\DXGetErrorString.inl" />
+    <None Include="src\Dxerr\DXTrace.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

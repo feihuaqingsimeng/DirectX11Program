@@ -1,5 +1,6 @@
 #include "DXException.h"
 #include <sstream>
+#include "Dxerr/dxerr.h"
 Exception::Exception(int line, const char* file)
 	:line(line), file(file)
 {
@@ -38,18 +39,26 @@ std::string Exception::GetOriginString() const
 	return oss.str();
 }
 
-ResultException::ResultException(int line, const char* file, HRESULT hr)
+ResultException::ResultException(int line, const char* file, HRESULT hr, std::vector < std::string> infoMsgs)
 	:Exception(line, file), hr(hr)
 {
-
+	for (const auto& m : infoMsgs) {
+		info += m;
+		info.push_back('\n');
+	}
+	if (!info.empty()) {
+		info.pop_back();
+	}
 }
 
 const char* ResultException::what() const
 {
 	std::ostringstream oss;
 	oss << GetType() << std::endl
-		<< "[Error Code]" << GetErrorCode() << std::endl
-		<< "[Description]" << GetErrorString() << std::endl
+		<< "[Error Code] 0x" << std::hex << std::uppercase << GetErrorCode()
+		<< std::dec << " (" << (unsigned long)GetErrorCode() << ")" << std::endl
+		<<"[Error String]" << GetErrorString()<<std::endl
+		<< "[Description]" << GetErrorDescription() << std::endl
 		<< GetOriginString();
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();
@@ -83,6 +92,14 @@ std::string ResultException::GetErrorString() const
 {
 	return TranslateErrorCode(hr);
 }
+
+std::string ResultException::GetErrorDescription() const
+{
+	char buf[512];
+	DXGetErrorDescriptionA(hr, buf, sizeof(buf));
+	return buf;
+}
+
 InfoException::InfoException(int line, const char* file, std::vector<std::string> infoMsgs)
 	:Exception(line,file)
 {

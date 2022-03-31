@@ -28,6 +28,12 @@
     <Filter Include="src\common">
       <UniqueIdentifier>{5967877d-8f90-407f-bfee-f1ff30b1503a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\shader">
+      <UniqueIdentifier>{d09a667d-16bf-48aa-9860-1b6e2cced04c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Dxerr">
+      <UniqueIdentifier>{dd78d659-b411-400a-9958-5eaba12b0bb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -62,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="src\dx11\DxgiInfoMgr.h">
       <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Dxerr\dxerr.h">
+      <Filter>src\Dxerr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -102,5 +111,27 @@
     <ClCompile Include="src\dx11\DxgiInfoMgr.cpp">
       <Filter>src\dx11</Filter>
     </ClCompile>
+    <ClCompile Include="src\Dxerr\dxerr.cpp">
+      <Filter>src\Dxerr</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="src\shader\vertexShader.hlsl">
+      <Filter>src\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="src\shader\PixelShader.hlsl">
+      <Filter>src\shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Dxerr\DXGetErrorDescription.inl">
+      <Filter>src\Dxerr</Filter>
+    </None>
+    <None Include="src\Dxerr\DXGetErrorString.inl">
+      <Filter>src\Dxerr</Filter>
+    </None>
+    <None Include="src\Dxerr\DXTrace.inl">
+      <Filter>src\Dxerr</Filter>
+    </None>
   </ItemGroup>
 </Project>
