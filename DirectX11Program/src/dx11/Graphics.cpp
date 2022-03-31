@@ -69,30 +69,65 @@ void Graphics::DrawTestTriangle()
 	HRESULT hr;
 	struct Vertex
 	{
-		float x;
-		float y;
+		struct
+		{
+			float x;
+			float y;
+		} pos;
+		struct
+		{
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
+		} color;
+		
 	};
-	const Vertex vertices[] = {
-		{0.0f,0.5f},
-		{0.5f,-0.5f},
-		{-0.5f,-0.5f}
+	 Vertex vertices[] = {
+		{0.0f,0.5f,255,0.0f,0.0f},
+		{0.5f,-0.5f,0.0f,255,0.0f},
+		{-0.5f,-0.5f,0.0f,0.0f,255},
+		{-0.3f,0.3f,0,255,0,0},
+		{0.3f,0.3f,0,0,255,0},
+		{0.0f,-0.8f,255,0,0,0},
 	};
+	 const unsigned short indices[] = {
+		 0,1,2,
+		 0,2,3,
+		 0,4,1,
+		 2,1,5,
+	 };
+	//vertex buffer
 	ComPtr<ID3D11Buffer> pVertextBuffer;
-	D3D11_BUFFER_DESC db = {};
-	db.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	db.Usage = D3D11_USAGE_DEFAULT;
-	db.CPUAccessFlags = 0u;
-	db.MiscFlags = 0u;
-	db.ByteWidth = sizeof(vertices);
-	db.StructureByteStride = sizeof(Vertex);
+	D3D11_BUFFER_DESC vbd = {};
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.Usage = D3D11_USAGE_DEFAULT;
+	vbd.CPUAccessFlags = 0u;
+	vbd.MiscFlags = 0u;
+	vbd.ByteWidth = sizeof(vertices);
+	vbd.StructureByteStride = sizeof(Vertex);
 	
 	D3D11_SUBRESOURCE_DATA sd = {};
 	sd.pSysMem = vertices;
 
-	THROW_FAILED(pDevice->CreateBuffer(&db, &sd, &pVertextBuffer));
+	THROW_FAILED(pDevice->CreateBuffer(&vbd, &sd, &pVertextBuffer));
 	const UINT stride = sizeof(Vertex);
 	const UINT offset = 0u;
 	pContext->IASetVertexBuffers(0u, 1u, pVertextBuffer.GetAddressOf(), &stride, &offset);
+
+	//index buffer
+	ComPtr<ID3D11Buffer> pIndexBuffer;
+	D3D11_BUFFER_DESC ibd = {};
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.ByteWidth = sizeof(indices);
+	ibd.CPUAccessFlags = 0u;
+	ibd.MiscFlags = 0u;
+	ibd.StructureByteStride = sizeof(unsigned short);
+	ibd.Usage = D3D11_USAGE_DEFAULT;
+	D3D11_SUBRESOURCE_DATA isd = {};
+	isd.pSysMem = indices;
+	THROW_FAILED( pDevice->CreateBuffer(&ibd, &isd, &pIndexBuffer));
+	pContext->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 
 	// create pixel shader
 	ComPtr<ID3D11PixelShader> pPixelShader;
@@ -113,6 +148,7 @@ void Graphics::DrawTestTriangle()
 	ComPtr<ID3D11InputLayout> pInputLayout;
 	const D3D11_INPUT_ELEMENT_DESC ied[] = {
 		{"Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
+		{"Color",0,DXGI_FORMAT_R8G8B8A8_UNORM,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0},
 	};
 	THROW_FAILED(pDevice->CreateInputLayout(ied, std::size(ied), blob->GetBufferPointer(),
 		blob->GetBufferSize(), &pInputLayout));
@@ -125,15 +161,15 @@ void Graphics::DrawTestTriangle()
 
 	//viewport
 	D3D11_VIEWPORT vp;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	vp.Width = 800;
-	vp.Height = 600;
+	vp.TopLeftX = 100;
+	vp.TopLeftY = 100;
+	vp.Width = 400;
+	vp.Height = 300;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 
 	pContext->RSSetViewports(1u, &vp);
 
-	THROW_INFO_ONLY( pContext->Draw((UINT)std::size(vertices), 0u));
+	THROW_INFO_ONLY(pContext->DrawIndexed(std::size(indices), 0u, 0u));
 }
 
